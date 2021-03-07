@@ -112,7 +112,10 @@ const app = express();
 const port = 3000;
 
 app.get("/sensor_state", (req, res) => {
-  res.json(sensorState);
+  res.json({
+    sensorState,
+    state
+  });
 });
 
 app.listen(port, () => {
