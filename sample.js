@@ -27,7 +27,7 @@ let state = {
   gotData: false,
   waitCount: 60,
   triggerTemp: 25,
-  triggerMinutes: 5,
+  triggerMinutes: 10,
   powerResets: [
     {
       time: new Date(0),
@@ -66,7 +66,7 @@ const callback = (data) => {
 const dutyLoop = function () {
   // Evaluate state
   const now = new Date();
-  if (now - state.powerResets.slice(-1).time > state.cooldownMin * 60000) {
+  if (now - state.powerResets.slice(-1)[0].time > state.cooldownMin * 60000) {
     if (
       sensorState.temps
         .slice(-state.triggerMinutes)
@@ -77,12 +77,12 @@ const dutyLoop = function () {
         `Freezer has been over trigger temp of (${state.triggerTemp}F) for at least (${state.triggerMinutes}) minutes.`
       );
       if (
-        now - state.powerResets.slice(-1).time >
+        now - state.powerResets.slice(-1)[0].time >
         state.triggerMinutes * 60000
       ) {
         logger_.info(
           `Resetting fridge power, last reset was at (${
-            state.powerResets.slice(-1).timeReadable
+            state.powerResets.slice(-1)[0].timeReadable
           })`
         );
         if (state.powerResets.length > 1000) {
